@@ -1,0 +1,50 @@
+.sidebar {
+    height: 100%;
+    width: 260px;
+    background: #0f172a;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* القائمة */
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* الروابط */
+.menu a {
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    display: block;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+/* hover */
+.menu a:hover {
+    background: #2563eb;
+}
+
+/* زر تسجيل الخروج */
+.logout-btn {
+    width: 100%;
+    padding: 14px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+    margin-top: 20px;
+}
+
+/* hover logout */
+.logout-btn:hover {
+    background: #dc2626;
+}

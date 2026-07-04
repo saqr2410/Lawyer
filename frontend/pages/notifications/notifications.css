@@ -1,0 +1,441 @@
+.notifications-page{
+
+    direction: rtl;
+
+    padding: 25px;
+
+}
+
+/* ==========================
+   Header
+========================== */
+
+.notifications-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    margin-bottom:25px;
+
+    flex-wrap:wrap;
+
+}
+
+.notifications-header h1{
+
+    margin:0;
+
+    font-size:30px;
+
+    color:#0f172a;
+
+}
+
+.notifications-header p{
+
+    margin-top:6px;
+
+    color:#64748b;
+
+}
+
+.notification-actions{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+}
+
+.notification-actions button{
+
+    border:none;
+
+    cursor:pointer;
+
+    background:#1e3a8a;
+
+    color:#fff;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    transition:.2s;
+
+}
+
+.notification-actions button:hover{
+
+    background:#162e6b;
+
+}
+
+/* ==========================
+   Toolbar
+========================== */
+
+.notifications-toolbar{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+    flex-wrap:wrap;
+
+}
+
+.notifications-toolbar input{
+
+    flex:1;
+
+    min-width:220px;
+
+    padding:12px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:10px;
+
+    outline:none;
+
+}
+
+.notifications-toolbar select{
+
+    padding:12px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+/* ==========================
+   List
+========================== */
+
+.notifications-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+/* ==========================
+   Card
+========================== */
+
+.notification-card{
+
+    background:#fff;
+
+    border-radius:16px;
+
+    padding:22px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    border-right:6px solid #cbd5e1;
+
+    transition:.2s;
+
+}
+
+.notification-card:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.notification-card.unread{
+
+    background:#eff6ff;
+
+    border-right-color:#2563eb;
+
+}
+
+.notification-card.read{
+
+    opacity:.75;
+
+}
+
+/* ==========================
+   Top
+========================== */
+
+.notification-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.notification-top h3{
+
+    margin:0 0 10px;
+
+    color:#0f172a;
+
+}
+
+/* ==========================
+   Tags
+========================== */
+
+.notification-type,
+
+.notification-event{
+
+    display:inline-block;
+
+    margin-left:8px;
+
+    margin-bottom:8px;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    color:#fff;
+
+}
+
+.notification-type{
+
+    background:#2563eb;
+
+}
+
+.notification-event{
+
+    background:#0f766e;
+
+}
+
+/* ==========================
+   Status
+========================== */
+
+.status{
+
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+.status.read{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+}
+
+.status.unread{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+}
+
+/* ==========================
+   Message
+========================== */
+
+.notification-message{
+
+    margin:20px 0;
+
+    line-height:1.8;
+
+    color:#334155;
+
+    font-size:15px;
+
+}
+
+/* ==========================
+   Info
+========================== */
+
+.notification-info{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:12px;
+
+    margin-bottom:20px;
+
+    color:#64748b;
+
+    font-size:14px;
+
+}
+
+/* ==========================
+   Buttons
+========================== */
+
+.notification-actions{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+}
+
+.notification-actions button{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    color:#fff;
+
+    transition:.2s;
+
+}
+
+.mark-read{
+
+    background:#16a34a;
+
+}
+
+.mark-read:hover{
+
+    background:#15803d;
+
+}
+
+.delete-notification{
+
+    background:#dc2626;
+
+}
+
+.delete-notification:hover{
+
+    background:#b91c1c;
+
+}
+
+/* ==========================
+   Empty
+========================== */
+
+.empty-state{
+
+    background:#fff;
+
+    padding:50px;
+
+    text-align:center;
+
+    border-radius:16px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.loading{
+
+    background:#fff;
+
+    padding:40px;
+
+    text-align:center;
+
+    border-radius:16px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media(max-width:768px){
+
+    .notifications-header{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .notification-actions{
+
+        width:100%;
+
+    }
+
+    .notification-actions button{
+
+        flex:1;
+
+    }
+
+    .notifications-toolbar{
+
+        flex-direction:column;
+
+    }
+
+    .notification-top{
+
+        flex-direction:column;
+
+    }
+
+    .notification-info{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
