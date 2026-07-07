@@ -18,11 +18,12 @@ os.makedirs(APP_DATA, exist_ok=True)
 # =========================
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-change-me")
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
+    ".onrender.com",
+    "localhost",
     "127.0.0.1",
-    "localhost"
 ]
 
 # =========================
