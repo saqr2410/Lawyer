@@ -1,24 +1,24 @@
+
 from pathlib import Path
 import os
 from datetime import timedelta
+import dj_database_url
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# =========================
-# APP DATA
-# =========================
-APP_DATA = os.path.join(
-    os.getenv("LOCALAPPDATA") or str(BASE_DIR),
-    "LawyerApp"
-)
-os.makedirs(APP_DATA, exist_ok=True)
 
 # =========================
 # SECURITY
 # =========================
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-change-me")
 
-DEBUG = False
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "dev-only-change-me"
+)
+
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+
 
 ALLOWED_HOSTS = [
     ".onrender.com",
@@ -26,10 +26,13 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
+
 # =========================
-# INSTALLED APPS
+# APPLICATIONS
 # =========================
+
 INSTALLED_APPS = [
+
     "corsheaders",
 
     "django.contrib.admin",
@@ -39,13 +42,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # third party
+
+    # Third party
     "rest_framework",
     "rest_framework_simplejwt",
     "django_filters",
     "drf_spectacular",
 
-    # apps
+
+    # Local apps
     "accounts",
     "clients",
     "cases",
@@ -56,134 +61,278 @@ INSTALLED_APPS = [
     "dashboard",
 ]
 
+
+
 # =========================
-# MIDDLEWARE (IMPORTANT ORDER)
+# MIDDLEWARE
 # =========================
+
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # لازم أول واحد
+
+    "corsheaders.middleware.CorsMiddleware",
 
     "django.middleware.security.SecurityMiddleware",
+
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
+
     "django.middleware.common.CommonMiddleware",
 
     "django.middleware.csrf.CsrfViewMiddleware",
+
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+
     "django.contrib.messages.middleware.MessageMiddleware",
+
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+
 # =========================
-# URLS
+# URL CONFIG
 # =========================
+
 ROOT_URLCONF = "config.urls"
+
 WSGI_APPLICATION = "config.wsgi.application"
+
+
 
 # =========================
 # TEMPLATES
 # =========================
+
 TEMPLATES = [
+
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "BACKEND":
+            "django.template.backends.django.DjangoTemplates",
+
         "DIRS": [],
+
         "APP_DIRS": True,
+
         "OPTIONS": {
+
             "context_processors": [
+
                 "django.template.context_processors.debug",
+
                 "django.template.context_processors.request",
+
                 "django.contrib.auth.context_processors.auth",
+
                 "django.contrib.messages.context_processors.messages",
+
             ],
         },
     },
 ]
 
+
+
 # =========================
 # DATABASE
 # =========================
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(APP_DATA, "db.sqlite3"),
-    }
+
+    "default": dj_database_url.config(
+
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+
+        conn_max_age=600,
+
+    )
 }
 
+
+
 # =========================
-# AUTH USER MODEL
+# USER MODEL
 # =========================
+
 AUTH_USER_MODEL = "accounts.User"
+
+
 
 # =========================
 # REST FRAMEWORK
 # =========================
+
 REST_FRAMEWORK = {
+
     "DEFAULT_AUTHENTICATION_CLASSES": (
+
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+
     ),
+
+
     "DEFAULT_PERMISSION_CLASSES": (
+
         "rest_framework.permissions.AllowAny",
+
     ),
+
+
     "DEFAULT_FILTER_BACKENDS": (
+
         "django_filters.rest_framework.DjangoFilterBackend",
+
     ),
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+
+
+    "DEFAULT_SCHEMA_CLASS":
+
+        "drf_spectacular.openapi.AutoSchema",
+
+
     "DEFAULT_RENDERER_CLASSES": (
+
         "rest_framework.renderers.JSONRenderer",
+
     ),
 }
 
+
+
 # =========================
-# SIMPLE JWT
+# JWT
 # =========================
+
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=12),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "AUTH_HEADER_TYPES": ("Bearer",),
+
+    "ACCESS_TOKEN_LIFETIME":
+
+        timedelta(hours=12),
+
+
+    "REFRESH_TOKEN_LIFETIME":
+
+        timedelta(days=7),
+
+
+    "AUTH_HEADER_TYPES":
+
+        ("Bearer",),
+
 }
 
+
+
 # =========================
-# CORS (FINAL FIX)
+# CORS
 # =========================
 
-CORS_ALLOW_ALL_ORIGINS = True  # 🔥 خلّيها True للتجربة داخل Electron
+CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOW_HEADERS = [
-    "content-type",
-    "authorization",
-    "accept",
-    "origin",
-    "x-requested-with",
-]
-
-CORS_ALLOW_METHODS = [
-    "GET",
-    "POST",
-    "PUT",
-    "PATCH",
-    "DELETE",
-    "OPTIONS",
-]
 
 CORS_ALLOW_CREDENTIALS = True
 
+
+CORS_ALLOW_HEADERS = [
+
+    "content-type",
+
+    "authorization",
+
+    "accept",
+
+    "origin",
+
+    "x-requested-with",
+
+]
+
+
+CORS_ALLOW_METHODS = [
+
+    "GET",
+
+    "POST",
+
+    "PUT",
+
+    "PATCH",
+
+    "DELETE",
+
+    "OPTIONS",
+
+]
+
+
+
 # =========================
-# STATIC / MEDIA
+# STATIC
 # =========================
+
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(APP_DATA, "staticfiles")
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+STATICFILES_STORAGE = (
+
+    "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+)
+
+
+
+# =========================
+# MEDIA
+# =========================
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(APP_DATA, "media")
-os.makedirs(MEDIA_ROOT, exist_ok=True)
+
+MEDIA_ROOT = BASE_DIR / "media"
+
+
 
 # =========================
-# INTERNATIONALIZATION
+# SECURITY HEADERS
 # =========================
+
+SECURE_PROXY_SSL_HEADER = (
+
+    "HTTP_X_FORWARDED_PROTO",
+
+    "https",
+
+)
+
+
+SESSION_COOKIE_SECURE = not DEBUG
+
+CSRF_COOKIE_SECURE = not DEBUG
+
+
+
+# =========================
+# LANGUAGE
+# =========================
+
 LANGUAGE_CODE = "en-us"
+
 TIME_ZONE = "Africa/Cairo"
+
 USE_I18N = True
+
 USE_TZ = True
 
+
+
 # =========================
-# DEFAULT AUTO FIELD
+# DEFAULT FIELD
 # =========================
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+DEFAULT_AUTO_FIELD = (
+
+    "django.db.models.BigAutoField"
+
+)
+
