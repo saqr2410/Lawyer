@@ -1,344 +1,466 @@
 import { apiRequest } from "../../js/api.js";
 
 
+export async function renderDashboard() {
 
-export async function renderDashboard(){
+  const content =
+    document.getElementById("content") ||
+    document.getElementById("app");
 
 
+  content.innerHTML = `
 
-const content =
-document.getElementById("content");
+  <div class="law-dashboard">
 
+    <h1 class="dashboard-title">
+      <i class="fas fa-scale-balanced"></i> الشافعي ⚖️
+    </h1>
 
+    <p class="dashboard-subtitle">
+      <i class="fas fa-chart-pie"></i>
+      ملخص أعمال المكتب
+    </p>
 
-content.innerHTML = `
 
+    <div id="status-message"></div>
 
 
-<div class="law-dashboard">
 
+    <!-- الكروت الرئيسية -->
 
+    <div class="law-cards">
 
-<h1 class="dashboard-title">
-الشافعي ⚖️
-</h1>
 
+      <div class="law-card clients">
+        <div class="card-head">
+          <span class="card-icon">👥</span>
+          <h3>العملاء</h3>
+        </div>
 
+        <strong id="clients">0</strong>
 
-<p class="dashboard-subtitle">
-ملخص أعمال المكتب
-</p>
+        <p>
+          إجمالي العملاء
+        </p>
+      </div>
 
 
 
+      <div class="law-card cases">
 
+        <div class="card-head">
+          <span class="card-icon">⚖️</span>
+          <h3>القضايا</h3>
+        </div>
 
-<div class="law-cards">
+        <strong id="cases">0</strong>
 
+        <p>
+          إجمالي القضايا
+        </p>
 
+      </div>
 
 
 
-<div class="law-card clients">
 
+      <div class="law-card hearings">
 
+        <div class="card-head">
+          <span class="card-icon">📅</span>
+          <h3>جلسات الغد</h3>
+        </div>
 
-<div class="card-head">
 
-<span class="card-icon">
-👥
-</span>
+        <strong id="hearings">
+          0
+        </strong>
 
 
-<h3>
-العملاء
-</h3>
+        <p>
+          جلسات قادمة
+        </p>
 
+      </div>
 
-</div>
 
 
 
-<strong id="clients">
-0
-</strong>
+      <div class="law-card payments">
 
+        <div class="card-head">
+          <span class="card-icon">💰</span>
+          <h3>الإيرادات</h3>
+        </div>
 
 
-<p>
-إجمالي العملاء
-</p>
+        <strong id="payments">
+          0
+        </strong>
 
 
+        <p>
+          إجمالي المدفوعات
+        </p>
 
-</div>
+      </div>
 
 
 
 
+      <div class="law-card notifications">
 
+        <div class="card-head">
+          <span class="card-icon">🔔</span>
+          <h3>التنبيهات</h3>
+        </div>
 
 
+        <strong id="notifications">
+          0
+        </strong>
 
-<div class="law-card cases">
 
+        <p>
+          غير مقروء
+        </p>
 
+      </div>
 
-<div class="card-head">
 
-<span class="card-icon">
-⚖️
-</span>
+    </div>
 
 
 
-<h3>
-القضايا
-</h3>
 
 
+    <!-- القضايا -->
 
-</div>
+    <h2 class="section-title">
+      <i class="fas fa-folder-open"></i>
+      القضايا بالتفصيل
+    </h2>
 
 
+    <div class="law-cards small">
 
 
-<strong id="cases">
-0
-</strong>
+      <div class="law-card">
+        <h3>مفتوحة</h3>
+        <strong id="openCases">0</strong>
+      </div>
 
 
+      <div class="law-card">
+        <h3>قيد التنفيذ</h3>
+        <strong id="progressCases">0</strong>
+      </div>
 
 
-<p>
-القضايا المسجلة
-</p>
+      <div class="law-card">
+        <h3>مغلقة</h3>
+        <strong id="closedCases">0</strong>
+      </div>
 
 
+      <div class="law-card">
+        <h3>مكسب</h3>
+        <strong id="wonCases">0</strong>
+      </div>
 
 
-</div>
+      <div class="law-card">
+        <h3>خسارة</h3>
+        <strong id="lostCases">0</strong>
+      </div>
 
 
+    </div>
 
 
 
 
 
+    <!-- العملاء -->
 
+    <h2 class="section-title">
+        <i class="fas fa-users"></i>
+        العملاء بالتفصيل
+    </h2>
 
-<div class="law-card hearings">
+    <div class="law-cards small">
 
+        <div class="law-card">
+            <h3>عملاء اليوم</h3>
+            <strong id="newClients">0</strong>
+        </div>
 
+        <div class="law-card">
+            <h3>هذا الشهر</h3>
+            <strong id="monthClients">0</strong>
+        </div>
 
-<div class="card-head">
+        <div class="law-card">
+            <h3>لديهم قضايا</h3>
+            <strong id="clientsWithCases">0</strong>
+        </div>
 
+        <div class="law-card">
+            <h3>بدون قضايا</h3>
+            <strong id="clientsWithoutCases">0</strong>
+        </div>
 
-<span class="card-icon">
-📅
-</span>
+    </div>
 
 
 
-<h3>
-جلسات الغد
-</h3>
 
 
 
-</div>
+    <!-- الجلسات -->
 
+    <h2 class="section-title">
+      <i class="fas fa-calendar-alt"></i>
+      الجلسات
+    </h2>
 
 
+    <div class="law-cards small">
 
-<strong id="hearings">
-0
-</strong>
 
+      <div class="law-card">
+        <h3>اليوم</h3>
+        <strong id="todayHearings">0</strong>
+      </div>
 
 
-<p>
-جلسات قادمة
-</p>
+      <div class="law-card">
+        <h3>غداً</h3>
+        <strong id="tomorrowHearings">0</strong>
+      </div>
 
 
+      <div class="law-card">
+        <h3>القادمة</h3>
+        <strong id="upcomingHearings">0</strong>
+      </div>
 
-</div>
 
+    </div>
 
 
 
 
 
 
+    <!-- المدفوعات -->
 
 
-<div class="law-card payments">
+    <h2 class="section-title">
+      <i class="fas fa-money-bill-wave"></i>
+      المدفوعات
+    </h2>
 
 
+    <div class="law-cards small">
 
-<div class="card-head">
 
+      <div class="law-card">
+        <h3>عدد العمليات</h3>
+        <strong id="paymentsCount">
+          0
+        </strong>
+      </div>
 
-<span class="card-icon">
-💰
-</span>
 
 
+      <div class="law-card">
+        <h3>مدفوعات اليوم</h3>
+        <strong id="todayPayments">
+          0
+        </strong>
+      </div>
 
-<h3>
-الإيرادات
-</h3>
 
+    </div>
 
 
-</div>
 
 
 
 
+    <!-- الإشعارات -->
 
-<strong id="payments">
-0
-</strong>
 
+    <h2 class="section-title">
 
+      <i class="fas fa-bell"></i>
 
+      الإشعارات
 
-<p>
-إجمالي المدفوعات
-</p>
+    </h2>
 
 
+    <div class="law-cards small">
 
-</div>
 
+      <div class="law-card">
+        <h3>غير مقروء</h3>
+        <strong id="unreadNotifications">
+          0
+        </strong>
+      </div>
 
 
 
+      <div class="law-card">
+        <h3>تم إرسالها</h3>
+        <strong id="sentNotifications">
+          0
+        </strong>
+      </div>
 
 
 
 
+      <div class="law-card">
+        <h3>معلقة</h3>
+        <strong id="pendingNotifications">
+          0
+        </strong>
+      </div>
 
-<div class="law-card notifications">
 
 
 
-<div class="card-head">
+      <div class="law-card">
+        <h3>اليوم</h3>
+        <strong id="todayNotifications">
+          0
+        </strong>
+      </div>
 
 
-<span class="card-icon">
-🔔
-</span>
+    </div>
 
 
 
-<h3>
-التنبيهات
-</h3>
+  </div>
 
+  `;
 
 
-</div>
 
+  // التنقل
 
+  document.querySelector(".clients").onclick =
+    () => location.hash = "clients";
 
 
+  document.querySelector(".cases").onclick =
+    () => location.hash = "cases";
 
-<strong id="notifications">
-0
-</strong>
 
+  document.querySelector(".hearings").onclick =
+    () => location.hash = "hearings";
 
 
+  document.querySelector(".payments").onclick =
+    () => location.hash = "payments";
 
 
-<p>
-غير مقروءة
-</p>
+  document.querySelector(".notifications").onclick =
+    () => location.hash = "notifications";
 
 
 
-</div>
 
 
+  try {
 
 
+    const res = await apiRequest("/dashboard/");
 
-</div>
 
+    const data = res.data || {};
 
 
 
+    console.log(
+      "📦 DASHBOARD DATA:",
+      data
+    );
 
-</div>
 
 
+    // الكروت الرئيسية
 
-`;
+    clients.innerText =
+      data.clients ?? 0;
 
 
+    cases.innerText =
+      data.cases ?? 0;
 
 
+    hearings.innerText =
+      data.hearings_tomorrow ?? 0;
 
 
-// فتح الصفحات عند الضغط على الكروت
+    payments.innerText =
+      data.payments ?? 0;
 
 
-document
-.querySelector(".clients")
-.onclick = ()=>{
+    notifications.innerText =
+      data.notifications ?? 0;
 
-location.hash = "clients";
 
-};
 
 
 
+    // القضايا
 
-document
-.querySelector(".cases")
-.onclick = ()=>{
+    openCases.innerText =
+      data.open_cases ?? 0;
 
-location.hash = "cases";
 
-};
+    progressCases.innerText =
+      data.in_progress_cases ?? 0;
 
 
+    closedCases.innerText =
+      data.closed_cases ?? 0;
 
 
-document
-.querySelector(".hearings")
-.onclick = ()=>{
+    wonCases.innerText =
+      data.won_cases ?? 0;
 
-location.hash = "hearings";
 
-};
+    lostCases.innerText =
+      data.lost_cases ?? 0;
 
 
 
 
-document
-.querySelector(".payments")
-.onclick = ()=>{
 
-location.hash = "payments";
 
-};
+    // العملاء
 
 
+    newClients.innerText =
+    data.new_clients ?? 0;
 
 
-document
-.querySelector(".notifications")
-.onclick = ()=>{
+    monthClients.innerText =
+    data.month_clients ?? 0;
 
-location.hash = "notifications";
 
-};
+    clientsWithCases.innerText =
+    data.clients_with_cases ?? 0;
 
 
+    clientsWithoutCases.innerText =
+    data.clients_without_cases ?? 0;
 
 
 
@@ -346,90 +468,75 @@ location.hash = "notifications";
 
 
 
-try{
+    // الجلسات
 
 
+    todayHearings.innerText =
+      data.today_hearings ?? 0;
 
-const res = await apiRequest(
 
-"/dashboard/"
+    tomorrowHearings.innerText =
+      data.tomorrow_hearings ?? 0;
 
-);
 
+    upcomingHearings.innerText =
+      data.upcoming_hearings ?? 0;
 
 
 
-const data =
-res.data;
 
 
 
 
+    // المدفوعات
 
 
-document.getElementById("clients").innerText =
+    paymentsCount.innerText =
+      data.payments_count ?? 0;
 
-data.clients ?? 0;
 
+    todayPayments.innerText =
+      data.today_payments ?? 0;
 
 
 
 
-document.getElementById("cases").innerText =
 
-data.cases ?? 0;
 
 
+    // الإشعارات
 
 
+    unreadNotifications.innerText =
+      data.unread_notifications ?? 0;
 
 
-document.getElementById("hearings").innerText =
+    sentNotifications.innerText =
+      data.sent_notifications ?? 0;
 
-data.hearings_tomorrow ?? 0;
 
+    pendingNotifications.innerText =
+      data.pending_notifications ?? 0;
 
 
+    todayNotifications.innerText =
+      data.today_notifications ?? 0;
 
 
 
-document.getElementById("payments").innerText =
+  }
 
-data.payments ?? 0;
 
+  catch(error){
 
 
+    console.log(
+      "❌ DASHBOARD ERROR:",
+      error
+    );
 
 
-
-document.getElementById("notifications").innerText =
-
-data.notifications ?? 0;
-
-
-
-
-
-}
-
-
-
-catch(error){
-
-
-
-console.log(
-
-"DASHBOARD ERROR",
-
-error
-
-);
-
-
-
-}
-
+  }
 
 
 }
